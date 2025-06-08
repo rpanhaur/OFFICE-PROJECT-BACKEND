@@ -1,6 +1,9 @@
 import{Table,Column,Model,DataType} from 'sequelize-typescript'
 
 
+
+
+
 @Table({
   tableName:'users',
   modelName:'User',
