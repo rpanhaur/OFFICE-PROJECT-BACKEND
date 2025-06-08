@@ -1,6 +1,7 @@
 import {Request,Response} from 'express'
 import User from '../../../database/models/user.models'
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 class AuthController{
 
@@ -70,6 +71,12 @@ class AuthController{
 
         if(isPasswordMatch){
           //TOKEN GENERATION
+
+          const token=jwt.sign({id:user[0].id},'process.env.JWT_SECRET',
+          {expiresIn: '1d'})
+          res.json({
+            token:token
+          })
           res.json({
             message:'Congratulation your are validated Now you can login'
           })
