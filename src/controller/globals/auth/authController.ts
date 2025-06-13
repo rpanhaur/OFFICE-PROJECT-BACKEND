@@ -63,7 +63,7 @@ class AuthController{
       if(user.length==0){
 
         res.json({
-          message:'Please enter correct Credentials '
+          message:'Please enter correct Email '
         })
       }else{
 
@@ -75,11 +75,10 @@ class AuthController{
           const token=jwt.sign({id:user[0].id},'process.env.JWT_SECRET',
           {expiresIn: '1d'})
           res.json({
-            token:token
+            token:token,
+            message:'Congratulation your are Successfully login'
           })
-          res.json({
-            message:'Congratulation your are validated Now you can login'
-          })
+         
         }else{
           res.json({
             message:'Enter your Valid Credentials'

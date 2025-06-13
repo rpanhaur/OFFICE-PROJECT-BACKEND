@@ -32,6 +32,7 @@ class User extends Model{
   @Column({
     type:DataType.STRING
     
+    
   })
   declare email:string
   @Column({
