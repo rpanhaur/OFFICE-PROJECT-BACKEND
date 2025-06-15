@@ -10,7 +10,7 @@ class instituteController{
 
     const {instituteName,instituteAddress,instituteEmail,institutePhone}=req.body
     const instituteVatNo=req.body.instituteVatNo || null 
-    const institutePanNo=req.body.instituteVatNo || null 
+    const institutePanNo=req.body.institutePanNo || null 
 
     if(!instituteName || !instituteAddress || !instituteEmail || !institutePhone){
       res.status(401).json({

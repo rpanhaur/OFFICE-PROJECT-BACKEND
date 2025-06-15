@@ -1,7 +1,11 @@
 import {Request,Response} from 'express'
+import dotenv from 'dotenv'
+dotenv.config()
 import User from '../../../database/models/user.models'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import { log } from 'console'
+
 
 class AuthController{
 
@@ -69,10 +73,13 @@ class AuthController{
 
         const isPasswordMatch=bcrypt.compareSync(password,user[0].password)
 
+        console.log('check secretkey',process.env.JWT_SECRET_IN);
+        
+
         if(isPasswordMatch){
           //TOKEN GENERATION
 
-          const token=jwt.sign({id:user[0].id},'process.env.JWT_SECRET',
+          const token=jwt.sign({id:user[0].id},process.env.JWT_SECRET_IN!,
           {expiresIn: '1d'})
           res.json({
             token:token,
