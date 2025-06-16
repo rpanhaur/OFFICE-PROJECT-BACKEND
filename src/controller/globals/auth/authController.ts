@@ -4,7 +4,7 @@ dotenv.config()
 import User from '../../../database/models/user.models'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { log } from 'console'
+
 
 
 class AuthController{
@@ -15,14 +15,14 @@ class AuthController{
 
   
     
-    const {username,password,email}=req.body
+    const {userName,password,email}=req.body
 
     
     
   
     
 
-    if(!username || !password || !email){
+    if(!userName || !password || !email){
       res.status(400).json({
         message:'Please provide username,password and email'
       })
@@ -30,7 +30,7 @@ class AuthController{
     }
     else{
       await User.create({
-        username:username,
+        userName:userName,
         password:bcrypt.hashSync(password,12),
         email:email
 

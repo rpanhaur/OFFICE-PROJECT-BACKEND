@@ -1,9 +1,5 @@
 import{Table,Column,Model,DataType} from 'sequelize-typescript'
 
-
-
-
-
 @Table({
   tableName:'users',
   modelName:'User',
@@ -22,7 +18,7 @@ class User extends Model{
   @Column({
     type:DataType.STRING
   })
-  declare username:string
+  declare userName:string
 
   @Column({
     type:DataType.STRING
@@ -40,6 +36,13 @@ class User extends Model{
     defaultValue:'student'
   })
   declare role:string
+
+  @Column({
+    type:DataType.STRING
+  })
+  declare currentInstituteNumber:string
+
+
 }
 
 export default User 

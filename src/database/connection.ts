@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize-typescript";
 import { envConfig } from "../config/config";
-import { dirname } from "path";
+
 
 const sequelize=new Sequelize({
 
@@ -21,7 +21,7 @@ sequelize.authenticate().then(()=>{
   
 })
 
-sequelize.sync({force:false}).then(()=>{
+sequelize.sync({alter:false}).then(()=>{
   console.log('Database is Migrated Successfully');
   
 })

@@ -23,7 +23,7 @@ class Middleware{
 
         if(error){
           res.status(402).json({
-            message:'Login Fail rabindra '
+            message:'Login Fail '
           })
           return
         }
@@ -37,6 +37,7 @@ class Middleware{
         }else{
           req.users=userData
           next()
+         
         }
 
 
@@ -47,6 +48,7 @@ class Middleware{
 
 
     }
+    
 
   }
 
