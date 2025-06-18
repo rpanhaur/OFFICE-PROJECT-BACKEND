@@ -84,7 +84,11 @@ class instituteController{
 
 
     }
-    req.instituteNumber=instituteNumber
+    
+
+
+
+  
     next()
 
 
@@ -94,38 +98,70 @@ class instituteController{
 
   }
 
-  static async createTeacher(req:IRequest,res:Response){
-    const instituteNumber=req.instituteNumber
+  static async createTeacher(req:IRequest,res:Response,next:NextFunction){
+    const instituteNumber=req.users?.currentInstituteNumber
+    console.log(instituteNumber,'checking institutenumber');
+    
 
-    // const {teacherName,teacherEmail,teacherPhoneNumber}=req.body
-    // if(!teacherName || !teacherEmail ||!teacherPhoneNumber){
-    //   res.status(402).json({
-    //     message:'Send teacherName,teacherEmail,teacherPhoneNumber plz '
-    //   })
-    //   return
-    // }
-
+    
     await sequelize.query(`CREATE TABLE IF NOT EXISTS teacher_${instituteNumber}(
       id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
       teacherName VARCHAR(255) NOT NULL,
       teacherEmail VARCHAR(255) NOT NULL,
-      teacherPhoneNumber VARCHAR(255) NOT NULL
+      teacherPhoneNumber VARCHAR(255) NOT NULL,
+      teacherSubject VARCHAR(255) NOT NULL,
+      teacherExperience VARCHAR(255) NOT NULL,
+      createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 
     )`)
 
-    // await sequelize.query(`INSERT INTO teacher_${instituteNumber}(teacherName,teacherEmail,teacherPhoneNumber) VALUES(?,?,?) `,{
-    //   replacements:[teacherName,teacherEmail,teacherPhoneNumber]
-    // })
-
-
-
    
-    res.status(200).json({
-      message:'Teacher table is created'
-    })
+
+   next()
 
   }
 
+
+static async createStudent(req:IRequest,res:Response,next:NextFunction){
+  const instituteNumber=req.users?.currentInstituteNumber
+
+  await sequelize.query(`CREATE TABLE IF NOT EXISTS student_${instituteNumber}(
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    studentName VARCHAR(255) NOT NULL,
+    studentAddress VARCHAR(255) NOT NULL,
+    studentPhone VARCHAR(255) NOT NULL,
+    studentCourse VARCHAR(255) NOT NULL,
+    studentEmail VARCHAR(255) NOT NULL,
+    studentBatch VARCHAR(255) NOT NULL,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+
+  )`)
+ next()
+
+
+}
+
+static async createCourse(req:IRequest,res:Response){
+
+  const instituteNumber=req.users?.currentInstituteNumber
+
+  await sequelize.query(`CREATE TABLE IF NOT EXISTS course_${instituteNumber}(
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    courseName VARCHAR(255) NOT NULL ,
+    coursePrice VARCHAR(255) NOT NULL,
+    courseDetails VARCHAR(255) NOT NULL,
+    courseDuration VARCHAR(255) NOT NULL,
+    courseLevel VARCHAR(255) NOT NULL,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  )`)
+  res.status(200).json({
+    message:"Course is Successfully Created and Happy Development",
+    instituteNumber:instituteNumber
+  })
+}
 
 
 

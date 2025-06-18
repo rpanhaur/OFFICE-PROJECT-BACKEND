@@ -5,10 +5,14 @@ export interface IRequest extends Request {
     id: string,
     userName: string,
     email: string,
-    password: string,
+    password: string,   
     currentInstituteNumber:string
+     
    
-  },
-  instituteNumber?:string | number
+  } 
+
+
+
+ 
   
 }

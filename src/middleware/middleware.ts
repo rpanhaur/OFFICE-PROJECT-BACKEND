@@ -28,7 +28,13 @@ class Middleware{
           return
         }
 
-        const userData= await User.findByPk(result.id)
+
+
+        const userData= await User.findByPk(result.id,{
+          attributes:[]
+        })
+        
+        
         if(!userData){
           res.status(402).json({
             message:'No user registered'
