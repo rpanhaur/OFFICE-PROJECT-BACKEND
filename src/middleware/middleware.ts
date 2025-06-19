@@ -4,14 +4,20 @@ dotenv.config()
 import { IRequest } from "./types";
 import jwt from 'jsonwebtoken'
 import User from "../database/models/user.models";
+import asyncErrorHandler from "../services/asyncErrorHandler";
 
 
 
-class Middleware{
 
-  static async isLogin(req:IRequest,res:Response,next:NextFunction){
+
+
+ class Middleware{
+
+
+
+  static   async isLogin(req:IRequest,res:Response,next:NextFunction){
     const token=req.headers.authorization
-    console.log(token);
+   
     
     if(!token){
       res.status(402).json({
@@ -31,7 +37,7 @@ class Middleware{
 
 
         const userData= await User.findByPk(result.id,{
-          attributes:[]
+          attributes:['id','currentInstituteNumber']
         })
         
         
@@ -57,6 +63,8 @@ class Middleware{
     
 
   }
+  
+  
 
 
 

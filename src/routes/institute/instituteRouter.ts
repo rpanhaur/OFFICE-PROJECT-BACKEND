@@ -7,7 +7,7 @@ import asyncErrorHandler from '../../services/asyncErrorHandler'
 
 const instituteRouter:Router=express.Router()
 
-instituteRouter.route('/institute').post(Middleware.isLogin,asyncErrorHandler(instituteController.createInstitute),asyncErrorHandler(instituteController.createTeacher),asyncErrorHandler(instituteController.createStudent),asyncErrorHandler(instituteController.createCourse))
+instituteRouter.route('/institute').post(Middleware.isLogin,instituteController.createInstitute,instituteController.createTeacher,instituteController.createStudent,instituteController.createCourse)
 
 
 
