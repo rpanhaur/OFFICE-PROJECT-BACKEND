@@ -73,7 +73,7 @@ class AuthController{
 
         const isPasswordMatch=bcrypt.compareSync(password,user[0].password)
 
-        console.log('check secretkey',process.env.JWT_SECRET_IN);
+      
         
 
         if(isPasswordMatch){

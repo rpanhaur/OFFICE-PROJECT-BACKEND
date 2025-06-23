@@ -7,14 +7,6 @@ export interface IRequest extends Request {
     currentInstituteNumber?:string | number
      
    
-  } 
- 
- 
-
-
-
-
-
- 
+  }  
   
 }

@@ -1,5 +1,5 @@
-import sequelize from "../../database/connection";
-import { IRequest } from "../../middleware/types";
+import sequelize from "../../../database/connection";
+import { IRequest } from "../../../middleware/types";
 import {Request,Response} from 'express'
 
 
@@ -25,6 +25,10 @@ class courseController{
 
     await sequelize.query(`INSERT INTO course_${instituteNumber}( courseName,coursePrice,courseDetails,courseDuration,courseLevel) VALUES(?,?,?,?,?)`,{
       replacements:[ courseName,coursePrice,courseDetails,courseDuration,courseLevel]
+    })
+
+    res.status(201).json({
+      message:`Course of This Institute is Successfully Created  !! Welcome to our Institute_${instituteNumber}`
     })
 
   }
