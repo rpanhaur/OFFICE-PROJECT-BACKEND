@@ -5,11 +5,14 @@ import asyncErrorHandler from '../../../services/asyncErrorHandler'
 
 
 
-const categoryRouter:Router=express.Router()
+const categoryRouter: Router = express.Router()
 
-categoryRouter.route('/category').post(Middleware.isLogin,asyncErrorHandler(categoryController.createCategory)).get(Middleware.isLogin,asyncErrorHandler(categoryController.getCategory))
+categoryRouter.route('/institute/category').post(Middleware.isLogin, asyncErrorHandler(categoryController.createCategory))
+    .get(Middleware.isLogin, asyncErrorHandler(categoryController.getCategory))
 
-categoryRouter.route('/category/:id').delete(Middleware.isLogin,asyncErrorHandler(categoryController.deleteCategory))
+categoryRouter.route('/institute/category/:id').delete(Middleware.isLogin, asyncErrorHandler(categoryController.deleteCategory))
+
+
 
 
 export default categoryRouter
