@@ -5,9 +5,15 @@ import courseRouter from './routes/institute/course/courseRouter';
 import teacherRouter from './routes/institute/teacher/teacherRoutes';
 import studentRouter from './routes/institute/student/studentRoutes';
 import categoryRouter from './routes/institute/category/categoryRoutes';
+import cors from 'cors'
 
 const userRouter = router
 const app = express()
+
+app.use(cors({
+    origin: "http://localhost:3000"
+}))
+
 app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
 
