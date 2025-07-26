@@ -65,6 +65,18 @@ class courseController {
   }
 
 
+  static async singleCourse(req: IRequest, res: Response) {
+    const instituteNumber = req.users?.currentInstituteNumber
+    const courseId = req.params.id
+    const singleCourseData = await sequelize.query(`SELECT * FROM course_${instituteNumber} WHERE id=?`, {
+      replacements: [courseId]
+    })
+    res.status(200).json({
+      message: 'Single course Data is fetched Successfully',
+      data: singleCourseData
+    })
+  }
+
 
 
 
