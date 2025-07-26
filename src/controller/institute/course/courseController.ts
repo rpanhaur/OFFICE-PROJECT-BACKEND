@@ -1,37 +1,71 @@
 import sequelize from "../../../database/connection";
 import { IRequest } from "../../../middleware/types";
-import {Request,Response} from 'express'
+import { Request, Response } from 'express'
 
 
-class courseController{
+class courseController {
 
-  static async createCourse(req:IRequest,res:Response){
-    const instituteNumber=req.users?.currentInstituteNumber
-    console.log(instituteNumber,'heeeeeeeeeeeeeeeee');
-    
-    const{ courseName,coursePrice,courseDetails,courseDuration,courseLevel}=req.body
+  static async createCourse(req: IRequest, res: Response) {
+    const instituteNumber = req.users?.currentInstituteNumber
 
-    if(!courseName || !coursePrice || !courseDetails || !courseDuration || !courseLevel){
+
+    const { courseName, coursePrice, courseDetails, courseDuration, courseLevel } = req.body
+
+    if (!courseName || !coursePrice || !courseDetails || !courseDuration || !courseLevel) {
       res.status(402).json({
-        message:'Please provide  courseName,coursePrice,courseDetails,courseDuration,courseLevel'
+        message: 'Please provide  courseName,coursePrice,courseDetails,courseDuration,courseLevel'
       })
       return
     }
-    console.log(instituteNumber);
-    
 
-    
-    
 
-    await sequelize.query(`INSERT INTO course_${instituteNumber}( courseName,coursePrice,courseDetails,courseDuration,courseLevel) VALUES(?,?,?,?,?)`,{
-      replacements:[ courseName,coursePrice,courseDetails,courseDuration,courseLevel]
+
+    await sequelize.query(`INSERT INTO course_${instituteNumber}( courseName,coursePrice,courseDetails,courseDuration,courseLevel) VALUES(?,?,?,?,?)`, {
+      replacements: [courseName, coursePrice, courseDetails, courseDuration, courseLevel]
     })
 
     res.status(201).json({
-      message:`Course of This Institute is Successfully Created  !! Welcome to our Institute_${instituteNumber}`
+      message: `Course of This Institute is Successfully Created  !! Welcome to our Institute_${instituteNumber}`
     })
 
   }
+
+  static async deleteCourse(req: IRequest, res: Response) {
+    const instituteNumber = req.users?.currentInstituteNumber
+    const courseId = req.params.id
+
+    const courseData = await sequelize.query(`SELECT * FROM course_${instituteNumber} WHERE id=?`, {
+      replacements: [courseId]
+    })
+
+    if (courseData[0].length > 0) {
+
+      await sequelize.query(`DELETE FROM course_${instituteNumber} WHERE id=?`, {
+        replacements: [courseId]
+      })
+
+
+    }
+
+
+
+    res.status(200).json({
+      message: 'Course is Successfully Deleted'
+    })
+  }
+
+  static async fetchCourse(req: IRequest, res: Response) {
+    const instituteNumber = req.users?.currentInstituteNumber
+    const couresData = await sequelize.query(`SELECT * FROM course_${instituteNumber}`)
+
+    res.status(200).json({
+      message: 'Course is successfully fetched ',
+      data: couresData
+    })
+  }
+
+
+
 
 
 
