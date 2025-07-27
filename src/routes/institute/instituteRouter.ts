@@ -5,9 +5,9 @@ import Middleware from '../../middleware/middleware'
 import asyncErrorHandler from '../../services/asyncErrorHandler'
 
 
-const instituteRouter:Router=express.Router()
+const instituteRouter: Router = express.Router()
 
-instituteRouter.route('/institute').post(Middleware.isLogin,instituteController.createInstitute,instituteController.createTeacher,instituteController.createStudent,instituteController.createCourse,asyncErrorHandler(instituteController.createCategory))
+instituteRouter.route('/institute').post(Middleware.isLogin, instituteController.createInstitute, instituteController.createTeacher, instituteController.createStudent, instituteController.createCourse, asyncErrorHandler(instituteController.createCategory))
 
 
 

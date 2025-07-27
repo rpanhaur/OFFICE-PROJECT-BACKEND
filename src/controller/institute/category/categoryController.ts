@@ -33,7 +33,7 @@ class categoryController {
     const categories = await sequelize.query(`SELECT * FROM category_${instituteNumber} `)
     res.status(200).json({
       message: 'Categories Fetched Successfully',
-      data: categories || []
+      data: categories
     })
 
 
