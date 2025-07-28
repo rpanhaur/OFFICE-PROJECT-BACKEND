@@ -2,6 +2,7 @@ import { Response } from "express";
 import { IRequest } from "../../../middleware/types";
 
 import sequelize from "../../../database/connection";
+import { QueryTypes } from "sequelize";
 
 
 class categoryController {
@@ -17,10 +18,22 @@ class categoryController {
     }
 
     await sequelize.query(`INSERT INTO category_${instituteNumber} (categoryName,categoryDescription) VALUES(?,?)`, {
+      type: QueryTypes.INSERT,
       replacements: [categoryName, categoryDescription]
     })
+
+    const [categoryData]: { id: string, createdAt: Date }[] = await sequelize.query(`SELECT id,createdAt FROM category_${instituteNumber} WHERE categoryName=?`, {
+      type: QueryTypes.SELECT,
+      replacements: [categoryName]
+    })
     res.status(200).json({
-      message: `Category Added Successfully of Institute_${instituteNumber}`
+      message: `Category Added Successfully of Institute_${instituteNumber}`,
+      data: {
+        categoryName,
+        categoryDescription,
+        id: categoryData.id,
+        createdAt: categoryData.createdAt
+      }
 
     })
 
@@ -44,6 +57,7 @@ class categoryController {
     const id = req.params.id
 
     await sequelize.query(`DELETE FROM category_${instituteNumber} WHERE id=?`, {
+      type: QueryTypes.DELETE,
       replacements: [id]
     })
 
