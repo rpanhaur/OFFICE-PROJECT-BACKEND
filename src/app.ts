@@ -1,11 +1,15 @@
 import express from 'express'
-import router from './routes/authRoutes'
-import instituteRouter from './routes/institute/instituteRouter';
-import courseRouter from './routes/institute/course/courseRouter';
-import teacherRouter from './routes/institute/teacher/teacherRoutes';
-import studentRouter from './routes/institute/student/studentRoutes';
-import categoryRouter from './routes/institute/category/categoryRoutes';
 import cors from 'cors'
+import router from './routes/authRoutes'
+import employeeRouter from './routes/employee-details/employee-router'
+import assignShiftRouter from './routes/roster/assignShift-router'
+import updatePerformanceRouter from './routes/roster/updatePerformace-router'
+import monthlyPerformanceRouter from './routes/roster/monthlyPerformance-router'
+import rosterWithAssignment from './routes/roster/roster-with-assignment-router'
+import createRosterRouter from './routes/roster/createRoster-router'
+
+
+
 
 const userRouter = router
 const app = express()
@@ -15,14 +19,27 @@ app.use(cors({
 }))
 
 app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
+
+// Debug middleware to log incoming request bodies
+// app.use((req, res, next) => {
+//     console.log("🔹 Incoming Request:");
+//     console.log("Method:", req.method);
+//     console.log("URL:", req.url);
+//     console.log("Headers:", req.headers);
+//     console.log("Body:", req.body);
+//     next();
+// });
+
+
 
 app.use('/api', userRouter)
-app.use('/api', instituteRouter)
-app.use('/api', courseRouter)
-app.use('/api', teacherRouter)
-app.use('/api', studentRouter)
-app.use('/api', categoryRouter)
+app.use('/api', employeeRouter)
+app.use('/api', createRosterRouter)
+app.use('/api', assignShiftRouter)
+app.use('/api', updatePerformanceRouter)
+app.use('/api', monthlyPerformanceRouter)
+app.use('/api', rosterWithAssignment)
+
 
 
 export default app 
