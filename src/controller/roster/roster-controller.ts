@@ -120,29 +120,32 @@ const getMonthlyPerformance = async (req: IRequest, res: Response) => {
     try {
         const [results]: any = await sequelize.query(
             `SELECT 
-          sa.employee_id,
-          u.employeeName,
-          COUNT(sa.id) AS total_shifts,
-          SUM(sa.tasks_completed) AS total_tasks,
-          AVG(sa.punctuality_score) AS avg_punctuality,
-          AVG(sa.rating) AS avg_rating,
-          GROUP_CONCAT(DISTINCT sa.duty_status) AS duty_statuses
-        FROM shift_assignments sa
-        JOIN rosters r ON sa.roster_id = r.id
-        JOIN users u ON sa.employee_id = u.id
-        WHERE MONTH(r.date) = ? AND YEAR(r.date) = ?
-        GROUP BY sa.employee_id, u.employeeName
-        ORDER BY total_shifts DESC`,
+      sa.employee_id,
+      e.employeeName,
+      COUNT(sa.id) AS total_shifts,
+      SUM(sa.tasks_completed) AS total_tasks,
+      ROUND(AVG(sa.punctuality_score), 2) AS avg_punctuality,
+      ROUND(AVG(sa.rating), 2) AS avg_rating,
+
+      GROUP_CONCAT(DISTINCT sa.duty_status) AS duty_statuses
+      FROM shift_assignments sa
+      JOIN rosters r ON sa.roster_id = r.id
+      JOIN employee e ON sa.employee_id = e.id
+       WHERE MONTH(r.date) = ? AND YEAR(r.date) = ?
+       GROUP BY sa.employee_id, e.employeeName
+       ORDER BY total_shifts DESC`,
             {
                 type: QueryTypes.SELECT,
                 replacements: [month, year],
             }
         );
 
+
         return res.status(200).json({
             message: "Monthly performance report (all duty statuses)",
-            data: results,
+            data: Array.isArray(results) ? results : [results],
         });
+
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: "Error generating report" });
@@ -157,7 +160,7 @@ const getRosterWithAssignments = async (req: IRequest, res: Response) => {
     }
 
     try {
-        const [results]: any = await sequelize.query(
+        const results: any = await sequelize.query(
             `SELECT 
                 r.id AS roster_id,
                 r.date,
@@ -166,8 +169,8 @@ const getRosterWithAssignments = async (req: IRequest, res: Response) => {
                 r.end_at,
                 r.notes,
                 sa.id AS assignment_id,
-                u.id AS employee_id,
-                u.employeeName,
+                e.id AS employee_id,
+                e.employeeName,
                 sa.role,
                 sa.duty_status,
                 sa.check_in,
@@ -178,13 +181,19 @@ const getRosterWithAssignments = async (req: IRequest, res: Response) => {
                 sa.remarks
             FROM rosters r
             LEFT JOIN shift_assignments sa ON r.id = sa.roster_id
-            LEFT JOIN users u ON sa.employee_id = u.id
+            LEFT JOIN employee e ON sa.employee_id = e.id
             WHERE r.id = ?`,
             {
                 type: QueryTypes.SELECT,
                 replacements: [roster_id],
             }
         );
+
+        console.log(results.roster_id, 'chekc roster id with out index');
+
+        console.log(results[0].roster_id, 'chekc roster id');
+
+
 
         if (!results || results.length === 0) {
             return res.status(404).json({ message: "Roster not found" });
@@ -214,6 +223,9 @@ const getRosterWithAssignments = async (req: IRequest, res: Response) => {
                     remarks: row.remarks,
                 })),
         };
+
+        console.log(roster, 'chek check roster data');
+
 
         return res.status(200).json({
             message: "Roster with assigned employees",
