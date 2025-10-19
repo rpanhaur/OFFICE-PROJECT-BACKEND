@@ -15,29 +15,32 @@ class AuthController {
 
 
 
-    const { userName, password, email } = req.body
+    const { userName, password, email, role } = req.body
 
 
 
 
 
 
-    if (!userName || !password || !email) {
+    if (!userName || !password || !email || !role) {
       res.status(400).json({
-        message: 'Please provide username,password and email'
+        message: 'Please provide username,password,email,role '
       })
 
     }
     else {
-      await User.create({
+      const data = await User.create({
         userName: userName,
         password: bcrypt.hashSync(password, 12),
-        email: email
+        email: email,
+        role: role
 
       })
 
       res.status(201).json({
-        message: 'User Register Successfully'
+        message: 'User Register Successfully',
+        data: data
+
       })
     }
 
@@ -120,6 +123,52 @@ class AuthController {
   }
 
 
+  static async getAllUsers(req: Request, res: Response) {
+    try {
+      const users = await User.findAll({
+        attributes: ["id", "userName", "email", "role", "createdAt"]
+      });
+
+
+
+
+      res.status(200).json({
+        message: "Users fetched successfully",
+        data: users
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: "Something went wrong",
+        error
+      });
+    }
+  }
+
+  static async deleteUser(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+
+      const user = await User.findByPk(id);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      await user.destroy();
+
+      res.status(200).json({
+        message: "User deleted successfully"
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: "Something went wrong",
+        error
+      });
+    }
+  }
+
+
+
+
 
 
 }
@@ -131,8 +180,3 @@ class AuthController {
 
 export default AuthController
 
-//WE can create object from class Authcontroller  and hold in any constant variable auth and export that object
-
-// const auth= new AuthController
-
-// export default auth

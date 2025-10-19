@@ -32,7 +32,7 @@ app.use(express.json());
 
 
 
-app.use('/api', userRouter)
+app.use('/api/auth', userRouter)
 app.use('/api', employeeRouter)
 app.use('/api', createRosterRouter)
 app.use('/api', assignShiftRouter)
